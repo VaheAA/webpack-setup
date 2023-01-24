@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="./assets/img/favicon.png" type="image/png">
+  <title>Webpack</title>
+
+  <style>
+    body,
+    html {
+      height: 100%;
+    }
+
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+
+    .template {
+      width: 500px;
+      height: 500px;
+      margin-inline: auto;
+    }
+
+    .template-img {
+      width: 100%;
+      display: block;
+      animation-name: spin;
+      animation-duration: 5000ms;
+      animation-iteration-count: infinite;
+      animation-timing-function: linear;
+    }
+
+    @keyframes spin {
+      from {
+        transform: rotate(0deg);
+      }
+
+      to {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Starter Webpack template for Web Development</h1>
+  <div class="template">
+    <img class="template-img" src="./assets/img/webpack.png" alt="">
+  </div>
+</body>
+
+</html>
