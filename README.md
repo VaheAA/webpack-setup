@@ -5,7 +5,7 @@ This is webpack starter enviroment for the web development.
 Setup includes:
 
 - JavaScript ES Modules
-- SCSS
+- SCSS with convenient folder structure and ready to use function, breakpoints and imports for confort front end development
 - Images and fonts loaders
 
 To use this setup
