@@ -1,12 +1,23 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const CopyPlugin = require('copy-webpack-plugin');
+const glob = require('glob');
 
 const mode = process.env.NODE_ENV || 'development';
 const devMode = mode === 'development';
 const target = devMode ? 'web' : 'browserslist';
 const devtool = devMode && 'source-map';
+
+const htmlFiles = glob.sync('./src/**/*.html');
+
+const htmlPlugins = htmlFiles.map((file) => {
+  return new HtmlWebpackPlugin({
+    filename: path.basename(file),
+    template: file,
+    inject: true,
+    chunks: ['main'],
+  });
+});
 
 module.exports = {
   mode,
@@ -14,32 +25,30 @@ module.exports = {
   devtool,
   devServer: {
     port: 3000,
-    open: true
+    open: true,
     // hot: true
   },
   entry: [
     '@babel/polyfill',
-    path.resolve(__dirname, 'src/assets/js', 'index.js')
+    path.resolve(__dirname, 'src/assets/js', 'index.js'),
   ],
   output: {
     path: path.resolve(__dirname, 'dist'),
-    clean: true,
+    clean: process.env.NODE_ENV === 'production',
     filename: './assets/js/[name].[contenthash].js',
-    assetModuleFilename: './assets/img/[hash][ext]'
+    assetModuleFilename: './assets/img/[hash][ext]',
   },
   plugins: [
-    new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, 'src', 'index.html')
-    }),
+    ...htmlPlugins,
     new MiniCssExtractPlugin({
-      filename: './assets/css/[name].[contenthash].css'
-    })
+      filename: './assets/css/[name].[contenthash].css',
+    }),
   ],
   module: {
     rules: [
       {
         test: /\.html$/i,
-        loader: 'html-loader'
+        loader: 'html-loader',
       },
       {
         test: /\.(c|sc|sa)ss$/i,
@@ -50,19 +59,19 @@ module.exports = {
             loader: 'postcss-loader',
             options: {
               postcssOptions: {
-                plugins: [require('postcss-preset-env')]
-              }
-            }
+                plugins: [require('postcss-preset-env')],
+              },
+            },
           },
-          'sass-loader'
-        ]
+          'sass-loader',
+        ],
       },
       {
         test: /\.woff2?$/i,
         type: 'asset/resource',
         generator: {
-          filename: './assets/fonts/[name][ext]'
-        }
+          filename: './assets/fonts/[name][ext]',
+        },
       },
       {
         test: /\.(jpe?g|png|svg|webp|gif)$/i,
@@ -72,30 +81,30 @@ module.exports = {
             options: {
               mozjpeg: {
                 progressive: true,
-                quality: 75
+                quality: 75,
               },
               // optipng.enabled: false will disable optipng
               optipng: {
-                enabled: false
+                enabled: false,
               },
               pngquant: {
                 quality: [0.65, 0.9],
-                speed: 4
+                speed: 4,
               },
               gifsicle: {
-                interlaced: false
+                interlaced: false,
               },
               // the webp option will enable WEBP
               webp: {
-                quality: 75
-              }
-            }
-          }
+                quality: 75,
+              },
+            },
+          },
         ],
         type: 'asset/resource',
         generator: {
-          filename: './assets/img/[hash][ext]'
-        }
+          filename: './assets/img/[name][ext]',
+        },
       },
       {
         test: /\.m?js$/,
@@ -103,10 +112,10 @@ module.exports = {
         use: {
           loader: 'babel-loader',
           options: {
-            presets: [['@babel/preset-env', { targets: 'defaults' }]]
-          }
-        }
-      }
-    ]
-  }
+            presets: [['@babel/preset-env', { targets: 'defaults' }]],
+          },
+        },
+      },
+    ],
+  },
 };
