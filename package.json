@@ -24,7 +24,7 @@
     "image-webpack-loader": "^8.1.0",
     "mini-css-extract-plugin": "^2.7.5",
     "postcss": "^8.4.23",
-    "postcss-loader": "^7.3.0",
+    "postcss-loader": "^8.1.1",
     "postcss-preset-env": "^9.5.14",
     "sass": "^1.62.1",
     "sass-loader": "^14.2.1",
